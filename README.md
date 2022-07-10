@@ -1,2 +1,2 @@
 # Overview
-This repo contains the config for [beets](https://github.com/beetbox/beets).
+This repo contains personal config for [beets](https://github.com/beetbox/beets).
