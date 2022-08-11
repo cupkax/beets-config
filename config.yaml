@@ -1,5 +1,4 @@
 include: # A list of extra configuration files to include.
-  # IMPORTANT: Most configurations doesn't seem to work in external files, so leave them here.
   - local.yaml
   - secrets.yaml
   - plugins.yaml
@@ -25,21 +24,20 @@ paths:
   singleton: $artist/Singletons/$title
   comp: Compilations/$album%aunique{}/$track $title
   albumtype:soundtrack: Soundtracks/$album%aunique{}/$track $title
-  ########################################################
+########################################################
 
-  ############################ Paths ############################
+########################### Paths ############################
   ext:jpg: $albumpath/scans/cover
   ext:png: $albumpath/scans/cover
   ext:pdf: $albumpath/scans/booklet
-
-########################################################
+#######################################################
 
 max_filename_length: 255 # 0 = unlimited.
 
 ############################ Import ############################
 import:
-  write: no
-  copy: no
+  write: yes
+  move: yes
   resume: yes
   incremental: no
   incremental_skip_later: no
@@ -81,8 +79,8 @@ match:
   preferred:
     media: ["Digital Media|File", "Digital Media"]
     countries: ["XW", "US", "GB|UK"]
-  strong_rec_thresh: 0.75
-  medium_rec_thresh: 0.125
+  strong_rec_thresh: 0.10
+  medium_rec_thresh: 0.04
 
 mbcollection:
   auto: yes
@@ -93,11 +91,11 @@ mbsubmit:
 ########################################################
 
 ############################ Beetcamp ############################
-bandcamp:
-  preferred_media: Digital
-  include_digital_only_tracks: true
-  search_max: 10
-  art: true
+#bandcamp:
+#  preferred_media: Digital
+#  include_digital_only_tracks: true
+#  search_max: 10
+#  art: true
 ########################################################
 
 ############################ Last.fm ############################
@@ -110,6 +108,7 @@ types:
 lastgenre:
   auto: yes
   count: 1
+  force: yes
   separator: "; "
   min_weight: 10
   prefer_specific: no
@@ -119,16 +118,16 @@ lastgenre:
 
 ############################ Lyrics ############################
 
-lyrics:
-  auto: yes
-  fallback: ""
-  force: no
-  sources:
-    - bandcamp
-    - genius
-    - lyricwiki
-    - google
-    - musixmatch
+  #lyrics:
+  #auto: yes
+  #fallback: ""
+  #force: no
+  #sources:
+  #  - bandcamp
+  #  - genius
+  #  - lyricwiki
+  #  - musixmatch
+  #  - google
 ########################################################
 
 ############################ Images ############################
@@ -143,7 +142,7 @@ fetchart:
     - coverart
     - albumart
     - fanarttv
-    - bandcamp
+      # - bandcamp
 
   store_source: yes
 embedart:

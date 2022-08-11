@@ -2,7 +2,6 @@ plugins:
   [
     acousticbrainz,
     badfiles,
-    bandcamp,
     chroma,
     copyartifacts,
     duplicates,
@@ -14,7 +13,6 @@ plugins:
     info,
     lastimport,
     lastgenre,
-    lyrics,
     mbcollection,
     mbsubmit,
     mbsync,
@@ -22,6 +20,5 @@ plugins:
     replaygain,
     unimported,
     scrub,
-    web,
-    zero,
+    web
   ]
