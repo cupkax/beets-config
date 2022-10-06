@@ -1,4 +1,6 @@
 beet.log
 musiclibrary.db
 state.pickle
+.gitsecret/keys/random_seed
+!*.secret
 secrets.yaml
