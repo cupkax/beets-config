@@ -1,8 +1,8 @@
 plugins:
   [
-    acousticbrainz,
     badfiles,
     chroma,
+    convert,
     copyartifacts,
     duplicates,
     edit,

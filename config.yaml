@@ -54,26 +54,28 @@ import:
 importadded:
   preserve_mtimes: no # After importing files, re-set their mtimes to their original value. Default: no.
   preserve_write_mtimes: no # After writing files, re-set their mtimes to their original value. Default: no.
-########################################################
 
-############################ AcousticBrainz ############################
-absubmit:
-  auto: yes
-  force: yes
-  pretend: no
 
-chroma:
-  auto: yes
+############################ Sources ############################
+spotify:
+  source_weight: 1.0
+  show_failures: true
 
-acousticbrainz:
-  auto: yes
-  force: yes
-########################################################
+beatport4:
+  source_weight: 0.7
+  art: true
+  art_overwrite: false
 
-############################ MusicBrainz ############################
 musicbrainz:
   searchlimit: 20
   extra_tags: [catalognum, country, label, media, year]
+  external_ids:
+    discogs: true
+    spotify: true
+    bandcamp: true
+    beatport: true
+    tidal: true
+
 
 match:
   preferred:
@@ -88,33 +90,28 @@ mbcollection:
 mbsubmit:
   format: $track. $title - $artist ($length)
   threshold: medium
-########################################################
 
-############################ Beetcamp ############################
-#bandcamp:
-#  preferred_media: Digital
-#  include_digital_only_tracks: true
-#  search_max: 10
-#  art: true
-########################################################
+
 
 ############################ Last.fm ############################
 lastimport:
   per_page: 500
   retry_limit: 3
+
 types:
   play_count: int
   rating: float
+  bpm: float
+
 lastgenre:
   auto: yes
-  count: 1
+  count: 3
   force: yes
   separator: "; "
   min_weight: 10
   prefer_specific: no
   source: track
   title_case: yes
-########################################################
 
 ############################ Lyrics ############################
 
@@ -128,13 +125,13 @@ lastgenre:
   #  - lyricwiki
   #  - musixmatch
   #  - google
-########################################################
 
 ############################ Images ############################
 fetchart:
   auto: yes
   cautious: no
   enforce_ratio: yes
+  quality: 100
   minwidth: 1000
   maxwidth: 3000
   sources:
@@ -142,16 +139,16 @@ fetchart:
     - coverart
     - albumart
     - fanarttv
-      # - bandcamp
-
+    - "*"
+  high_resolution: true
   store_source: yes
+
 embedart:
-  auto: no
+  auto: yes
   compare_threshold: 50
   ifempty: yes
   maxwidth: 0
   remove_art_file: no
-########################################################
 
 ############################ ReplayGain ############################
 replaygain:
@@ -160,9 +157,9 @@ replaygain:
   overwrite: no
   targetlevel: 89
   per_disc: no
-########################################################
 
 ############################ Maintenance ############################
+
 duplicates:
   album: no
   checksum: ffmpeg -i {file} -f crc -
@@ -177,23 +174,84 @@ duplicates:
   path: no
   strict: no
   tiebreak: {}
-#check:
-#  import: yes
-#  write-check: yes
-#  write-update: yes
-#  convert-update: no
-#  threads: 1
+
 scrub:
   auto: yes
+
 zero:
   fields: comments
-########################################################
+
+############################ Convert ############################
+
+convert:
+  auto: true
+  tmpdir: /home/cupkax/beets-tmp
+  formats:
+    flac:
+      command: ffmpeg -i $source $dest -y
+    aiff:
+      command: ffmpeg -i $source -write_id3v2 1 $dest -y
+  format: flac
+  no_convert:
+    - format:flac
+    - format:mp3
+    - format:aac
+  delete_originals: true
+  copy_album_art: true
+  embed: true
+
+############################ Check ############################
+
+check:
+  import: yes
+  write-check: yes
+  write-update: yes
+  convert-update: no
+  threads: 4
+
+############################ Edit ############################
+
+edit:
+  itemfields:
+    - albumartist
+    - album
+    - disc
+    - disctotal
+    - albumtype
+    - comp
+    - year
+    - label
+    - catalognum
+    - cover_art_url
+    - artist
+    - track
+    - tracktotal
+    - title
+    - genre
+    - rating
+    - bpm
+    - key
+    - comments
+    - lyrics
+  albumfields:
+    - albumartist
+    - album
+    - disctotal
+    - albumtype
+    - label
+    - catalognum
+    - cover_art_url
+    - comp
+    - year
+    - genre
+    - comments
 
 ############################ UI ############################
 
 verbose: no
 
 ui:
+  length_diff_thresh: 3
   color: yes
   colors:
     text_success: green
@@ -203,15 +261,19 @@ ui:
     text_highlight_minor: lightgray
     action_default: darkblue
     action: purple
+  import:
+      indentation:
+          match_header: 4
+          match_details: 4
+          match_tracklist: 7
+      layout: newline
 
 hook:
   hooks:
-    #############################################
     - event: album_imported
       command: echo "\"{album}\""
     - event: import
       command: echo "imported from {paths}"
-    #############################################
     - event: art_set
       command: echo "Coverart saved"
     - event: import_begin
@@ -226,4 +288,3 @@ hook:
       command: echo "Writing to {path}"
     - event: cli_exit
       command: echo "All tasks finished!"
-########################################################
