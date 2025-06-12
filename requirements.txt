@@ -1,6 +1,4 @@
-beets
 requests
-acoustid
 pylast
 flask
 ffmpeg-python
